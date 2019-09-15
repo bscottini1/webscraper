@@ -20,6 +20,10 @@ mongoose.connect("mongodb://localhost/scraper", {
 });
 
 
+app.get("/", function (req, res) {
+    res.sendFile(path.join(__dirname + "./public.index.html"));
+});
+
 app.get("/scrape", function (req, res) {
     axios.get("https://www.mlbtraderumors.com/").then(function (response) {
         var $ = cheerio.load(response.data);
@@ -31,9 +35,6 @@ app.get("/scrape", function (req, res) {
             result.url = $(this)
                 .children()
                 .attr("href");
-            result.summary = $(this)
-                .children("p")
-                .text();
 
             db.Article.create(result)
                 .then(function (dbArticle) {
@@ -47,12 +48,15 @@ app.get("/scrape", function (req, res) {
         });
     });
 
-
-
-
-app.get("/", function (req, res) {
-    res.send("Home Page!");
+app.get("/articles", function(req, res){
+    db.Article.find({}).then(function(dbNote){
+        res.json(dbNote);
+    })
+    .catch(function(err){
+        res.json(err);
+    });
 })
+
 
 
 
