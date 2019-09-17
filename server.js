@@ -1,3 +1,4 @@
+
 const express = require("express");
 const mongoose = require("mongoose");
 const axios = require("axios");
@@ -24,6 +25,8 @@ app.get("/", function (req, res) {
     res.sendFile(path.join(__dirname + "./public.index.html"));
 });
 
+
+// $(document).ready(function()
 app.get("/scrape", function (req, res) {
     axios.get("https://www.mlbtraderumors.com/").then(function (response) {
         var $ = cheerio.load(response.data);
