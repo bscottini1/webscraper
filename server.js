@@ -27,15 +27,21 @@ app.get("/", function (req, res) {
 app.get("/scrape", function (req, res) {
     axios.get("https://www.mlbtraderumors.com/").then(function (response) {
         var $ = cheerio.load(response.data);
-        $("article h2").each(function (i, element) {
-            var result = {};
+        $("main article.post").each(function (i, element) {
+            const result = {};
+
             result.headline = $(this)
-                .children("a")
+                .find("h2 a")
                 .text();
+            result.summary = $(this)
+                .find("div.entry-content p:first-child")
+                .text();
+
             result.url = $(this)
-                .children()
+                .find("h2 a")
                 .attr("href");
 
+            
             db.Article.create(result)
                 .then(function (dbArticle) {
                     console.log(dbArticle);
@@ -56,6 +62,9 @@ app.get("/articles", function(req, res){
         res.json(err);
     });
 })
+
+
+
 
 
 

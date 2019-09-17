@@ -6,6 +6,9 @@ const ArticleSchema = new Schema ({
   headline: {
     type: String,
   },
+    summary: {
+      type: String,
+    },
   url: {
     type: String,
   }
