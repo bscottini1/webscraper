@@ -6,6 +6,8 @@
 // });
 
 function scrape(){
+    $("#articles").empty()
+    
     $.get("/scrape", loadPage)
 }
 scrape();
